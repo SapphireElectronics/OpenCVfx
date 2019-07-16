@@ -74,7 +74,7 @@ public class Controller {
         junctionStage.show();
 
         JuncController controller = loader.getController();
-        controller.init( this.id );
+        controller.init( this.id, this );
     }
 
     protected void load() {

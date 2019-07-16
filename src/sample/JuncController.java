@@ -7,11 +7,13 @@ import javafx.scene.input.MouseEvent;
 
 public class JuncController {
     private Ident id;
+    private Controller controller;
     private double scale;
 
-    public void init( Ident id )
+    public void init( Ident id, Controller controller )
     {
         this.id = id;
+        this.controller = controller;
         load();
     }
     @FXML
@@ -19,6 +21,17 @@ public class JuncController {
 
     @FXML
     private Slider sizeSlider;
+
+    @FXML
+    protected void transferPress() {
+        findJunctions();
+        controller.updateJunctions();
+    }
+
+    @FXML
+    protected void closePress() {
+
+    }
 
     @FXML
     protected void sizeUpdate(MouseEvent scrollEvent) {
