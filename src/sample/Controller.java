@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -75,6 +76,21 @@ public class Controller {
 
         JuncController controller = loader.getController();
         controller.init( this.id, this );
+
+        FXMLLoader loader2 = new FXMLLoader(getClass().getResource("LineCont.fxml"));
+        Parent root2 = null;
+        try {
+            root2 = (SplitPane) loader2.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage junctionStage2 = new Stage();
+        junctionStage2.setScene( new Scene( root2, 600, 400 ));
+        junctionStage2.show();
+
+        LineController controller2 = loader2.getController();
+        controller2.init( this.id, this );
     }
 
     protected void load() {

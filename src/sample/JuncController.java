@@ -8,7 +8,6 @@ import javafx.scene.input.MouseEvent;
 public class JuncController {
     private Ident id;
     private Controller controller;
-    private double scale;
 
     public void init( Ident id, Controller controller )
     {
@@ -30,7 +29,6 @@ public class JuncController {
 
     @FXML
     protected void closePress() {
-
     }
 
     @FXML
@@ -38,15 +36,8 @@ public class JuncController {
         findJunctions();
     }
 
-
     public void load() {
         Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image(this.id.getJunctions()));
-
-        // calculate and save the image scaling
-        double xs = juncImage.getFitWidth() / id.getOverlay().cols();
-        double ys = juncImage.getFitHeight() / id.getOverlay().rows();
-        this.scale = Math.min(1.0, Math.min(xs, ys));
-
         findJunctions();
     }
 
@@ -55,5 +46,4 @@ public class JuncController {
         this.id.junction( sz );
         Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image( this.id.getJunctions() ) );
     }
-
 }
