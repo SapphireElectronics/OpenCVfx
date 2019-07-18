@@ -4,13 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -61,6 +59,12 @@ public class Controller {
     }
 
     @FXML
+    protected void juncErase() {
+        id.eraseJunctions( (int) juncSlider.getValue());
+        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( id.getOverlayMat() ) );
+    }
+
+    @FXML
     protected void junctionStage() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("junction.fxml"));
         Parent root = null;
@@ -96,11 +100,11 @@ public class Controller {
     protected void load() {
         this.id.init();
 
-        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( this.id.getOverlay() ) );
+        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( this.id.getOverlayMat() ) );
 
         // calculate and save the image scaling
-        double xs = srcImage.getFitWidth() / id.getOverlay().cols();
-        double ys = srcImage.getFitHeight() / id.getOverlay().rows();
+        double xs = srcImage.getFitWidth() / id.getOverlayMat().cols();
+        double ys = srcImage.getFitHeight() / id.getOverlayMat().rows();
         this.scale = Math.min( 1.0, Math.min( xs, ys ) );
 
         findJunctions();
@@ -108,13 +112,13 @@ public class Controller {
 
     protected void findJunctions() {
         int sz = (int) juncSlider.getValue();
-        this.id.junction( sz );
-        Utils.onFXThread( currentFrame.imageProperty(), Utils.mat2Image( this.id.getJunctions() ) );
+        this.id.findJunctions( sz );
+        Utils.onFXThread( currentFrame.imageProperty(), Utils.mat2Image( this.id.getJunctionMat() ) );
     }
 
     protected void updateJunctions(){
-        this.id.updateJunctions();
-        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( id.getOverlay() ) );
+        this.id.drawJunctions();
+        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( id.getOverlayMat() ) );
     }
 
     @FXML

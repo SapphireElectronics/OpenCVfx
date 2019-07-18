@@ -45,25 +45,35 @@ public class LineController {
 
     @FXML
     protected void param1update(MouseEvent scrollEvent) {
+        update();
     }
     @FXML
     protected void param2update(MouseEvent scrollEvent) {
+        update();
     }
     @FXML
     protected void param3update(MouseEvent scrollEvent) {
+        update();
     }
     @FXML
     protected void param4update(MouseEvent scrollEvent) {
+        update();
+    }
+
+    public void update() {
+        id.findText( (int) param1.getValue(), (int) param2.getValue(), (int) param3.getValue(), (int) param4.getValue() );
+        Utils.onFXThread( image.imageProperty(), Utils.mat2Image( this.id.getTextMat() ) );
+
     }
 
     public void load() {
-        Utils.onFXThread( image.imageProperty(), Utils.mat2Image(this.id.getJunctions()));
-        findJunctions();
+        Utils.onFXThread( image.imageProperty(), Utils.mat2Image(this.id.getTextMat()));
+//        findJunctions();
     }
 
     protected void findJunctions() {
-        int sz = (int) param1.getValue();
-        this.id.junction( sz );
-        Utils.onFXThread( image.imageProperty(), Utils.mat2Image( this.id.getJunctions() ) );
+//        int sz = (int) param1.getValue();
+//        this.id.findJunctions( sz );
+        Utils.onFXThread( image.imageProperty(), Utils.mat2Image( this.id.getTextMat() ) );
     }
 }

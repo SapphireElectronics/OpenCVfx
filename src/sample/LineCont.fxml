@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LineController">
-   <items>
-         <HBox maxWidth="200.0" prefHeight="100.0" prefWidth="200.0">
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LineController">
+    <items>
+        <HBox maxWidth="200.0" prefHeight="100.0" prefWidth="200.0">
             <children>
-            <VBox prefHeight="200.0" prefWidth="50.0">
-               <children>
-                        <Slider fx:id="param1" minWidth="50.0" minorTickCount="4" onMouseReleased="#param1update" orientation="VERTICAL" prefHeight="300.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
-                  <Label fx:id="param1label" prefWidth="50.0" text="Param 1" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="50.0">
-               <children>
-                        <Slider fx:id="param2" minWidth="50.0" minorTickCount="4" onMouseReleased="#param2update" orientation="VERTICAL" prefHeight="300.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
-                  <Label fx:id="param2label" prefWidth="50.0" text="Param 2" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="50.0">
-               <children>
-                        <Slider fx:id="param3" minWidth="50.0" minorTickCount="4" onMouseReleased="#param3update" orientation="VERTICAL" prefHeight="300.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
-                  <Label fx:id="param3label" prefWidth="50.0" text="Param 3" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="50.0">
-               <children>
-                        <Slider fx:id="param4" minWidth="50.0" minorTickCount="4" onMouseReleased="#param4update" orientation="VERTICAL" prefHeight="300.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
-                  <Label fx:id="param4label" prefWidth="50.0" text="Param 4" />
-               </children>
-            </VBox>
+                <VBox prefHeight="200.0" prefWidth="50.0">
+                    <children>
+                        <Slider fx:id="param1" blockIncrement="1.0" majorTickUnit="5.0" max="25.0" maxHeight="1.7976931348623157E308" maxWidth="50.0" minHeight="300.0" minWidth="50.0" minorTickCount="4" onMouseReleased="#param1update" orientation="VERTICAL" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
+                        <Label fx:id="param1label" prefWidth="50.0" text="Param 1" />
+                    </children>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="50.0">
+                    <children>
+                        <Slider fx:id="param2" blockIncrement="1.0" majorTickUnit="5.0" max="25.0" maxHeight="1.7976931348623157E308" maxWidth="50.0" minHeight="300.0" minWidth="50.0" minorTickCount="4" onMouseReleased="#param2update" orientation="VERTICAL" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
+                        <Label fx:id="param2label" prefWidth="50.0" text="Param 2" />
+                    </children>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="50.0">
+                    <children>
+                        <Slider fx:id="param3" blockIncrement="1.0" majorTickUnit="5.0" max="25.0" maxHeight="1.7976931348623157E308" maxWidth="50.0" minHeight="300.0" minWidth="50.0" minorTickCount="4" onMouseReleased="#param3update" orientation="VERTICAL" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
+                        <Label fx:id="param3label" prefWidth="50.0" text="Param 3" />
+                    </children>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="50.0">
+                    <children>
+                        <Slider fx:id="param4" blockIncrement="1.0" majorTickUnit="5.0" max="25.0" maxHeight="1.7976931348623157E308" maxWidth="50.0" minHeight="300.0" minWidth="50.0" minorTickCount="4" onMouseReleased="#param4update" orientation="VERTICAL" prefWidth="50.0" showTickLabels="true" showTickMarks="true" />
+                        <Label fx:id="param4label" prefWidth="50.0" text="Param 4" />
+                    </children>
+                </VBox>
             </children>
-         </HBox>
-         <ImageView fx:id="image" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
-   </items>
+        </HBox>
+        <ImageView fx:id="image" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+    </items>
 </SplitPane>

@@ -37,13 +37,13 @@ public class JuncController {
     }
 
     public void load() {
-        Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image(this.id.getJunctions()));
+        Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image(this.id.getJunctionMat()));
         findJunctions();
     }
 
     protected void findJunctions() {
         int sz = (int) sizeSlider.getValue();
-        this.id.junction( sz );
-        Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image( this.id.getJunctions() ) );
+        this.id.findJunctions( sz );
+        Utils.onFXThread( juncImage.imageProperty(), Utils.mat2Image( this.id.getJunctionMat() ) );
     }
 }
