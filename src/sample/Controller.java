@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -21,9 +22,13 @@ public class Controller {
     private Ident id;
     private double scale;
 
+    private MatViewController matViewController;
+
     public void init()
     {
         id = new Ident();
+        this.matViewController = newStage( "MatView.fxml", 2 ).getController();
+        this.matViewController.init( this );
         load();
     }
 
@@ -38,6 +43,7 @@ public class Controller {
 
     @FXML
     protected void juncUpdate(MouseEvent scrollEvent) {
+
         findJunctions();
     }
 
@@ -61,12 +67,47 @@ public class Controller {
     @FXML
     protected void juncErase() {
         id.eraseJunctions( (int) juncSlider.getValue());
-        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( id.getOverlayMat() ) );
+        Utils.onFXThread( srcImage.imageProperty(), Utils.mat2Image( id.getCombiMat() ) );
     }
 
     @FXML
     protected void junctionStage() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("junction.fxml"));
+        JuncController juncController = newStage( "junction.fxml" ).getController();
+        juncController.init( this.id, this );
+
+        LineController lineController = newStage( "LineCont.fxml", 3 ).getController();
+        lineController.init( this.id, this );
+    }
+
+    private FXMLLoader newStage( String name, int type ) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(name ));
+        Parent root = null;
+        try {
+            switch( type ) {
+                case 1:
+                    root = (BorderPane) loader.load();
+                    break;
+                case 2:
+                    root = (TitledPane) loader.load();
+                    break;
+                case 3:
+                    root = (SplitPane) loader.load();
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage stage = new Stage();
+        stage.setScene( new Scene( root, 600, 400 ));
+        stage.show();
+
+        return loader;
+
+    }
+
+    private FXMLLoader newStage( String name ) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(name ));
         Parent root = null;
         try {
             root = (BorderPane) loader.load();
@@ -74,28 +115,13 @@ public class Controller {
             e.printStackTrace();
         }
 
-        Stage junctionStage = new Stage();
-        junctionStage.setScene( new Scene( root, 600, 400 ));
-        junctionStage.show();
+        Stage stage = new Stage();
+        stage.setScene( new Scene( root, 600, 400 ));
+        stage.show();
 
-        JuncController controller = loader.getController();
-        controller.init( this.id, this );
-
-        FXMLLoader loader2 = new FXMLLoader(getClass().getResource("LineCont.fxml"));
-        Parent root2 = null;
-        try {
-            root2 = (SplitPane) loader2.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Stage junctionStage2 = new Stage();
-        junctionStage2.setScene( new Scene( root2, 600, 400 ));
-        junctionStage2.show();
-
-        LineController controller2 = loader2.getController();
-        controller2.init( this.id, this );
+        return loader;
     }
+
 
     protected void load() {
         this.id.init();
@@ -111,9 +137,14 @@ public class Controller {
     }
 
     protected void findJunctions() {
+
+
         int sz = (int) juncSlider.getValue();
         this.id.findJunctions( sz );
         Utils.onFXThread( currentFrame.imageProperty(), Utils.mat2Image( this.id.getJunctionMat() ) );
+
+        if( matViewController != null )
+            matViewController.setMat( 0, this.id.getJunctionMat() );
     }
 
     protected void updateJunctions(){

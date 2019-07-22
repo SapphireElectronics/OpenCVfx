@@ -10,17 +10,21 @@ import java.util.List;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static org.opencv.core.Core.bitwise_not;
+import static org.opencv.core.Core.bitwise_or;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 import static org.opencv.imgproc.Imgproc.*;
 import static org.opencv.imgproc.Imgproc.drawContours;
 
 public class Ident implements Serializable {
-    transient private Mat srcInit;
-    transient private Mat srcBW;
-    transient private Mat junctionMat;
-    transient private Mat textMat;
-    transient private Mat overlayMat;
+    transient private Mat srcInit;      // initial copy of source image, not to be edited
+    transient private Mat srcCopy;      // copy of source image used for edits
+    transient private Mat srcBW;        // copy of image converted to binary for analysis
+    transient private Mat junctionMat;  // copy of image used for junction identification
+    transient private Mat textMat;      // copy of image used for text identification
+    transient private Mat overlayMat;   // image with same size as source, used for rendering features on
+    transient private Mat combiMat;     // display image usually overlay combined with srcCopy
+
 
     transient public List<Point> junctionsList = new ArrayList<>();
 
@@ -30,6 +34,7 @@ public class Ident implements Serializable {
 
         // generate a copy of the source onto which overlayMat data is placed
         overlayMat = srcInit.clone();
+        srcCopy = srcInit.clone();
         junctionMat = srcInit.clone();
         textMat = srcInit.clone();
 
@@ -115,7 +120,7 @@ public class Ident implements Serializable {
 
     public void drawJunctions()
     {
-        overlayMat = srcInit.clone();
+        overlayMat = new Mat(srcInit.rows(), srcInit.cols(), srcInit.type() );
         for( Point junc : junctionsList ) {
             circle(overlayMat, junc, 5, new Scalar(0,0,255),1,8);
         }
@@ -123,20 +128,22 @@ public class Ident implements Serializable {
 
     public void eraseJunctions( int size )
     {
+        srcCopy = srcInit.clone();
+        size = 13;
+        int half = size/2;
         int x,y;
         for( Point junc : junctionsList ) {
-            x = (int) junc.x;
-            y = (int) junc.y;
+            x = (int) junc.x-1;
+            y = (int) junc.y-1;
             double[] c = { 0, 255, 0 };
 
-            for( int i=0; i<size/2; i++ ) {
+            for( int i=1; i<size/2; i++ ) {
                 for( int j=-size/2; j<size/2; j++ ) {
                     System.out.println( "size:(x,y)" + size + ":(" + x + "," + y + ")" );
-                    System.out.println( "Array" + overlayMat.get( x, y ).length );
-//                    overlayMat.put( x-i, y-j, overlayMat.get( x-i, y ));
-//                    overlayMat.put( x-i, y+j, overlayMat.get( x-i, y ));
-                    overlayMat.put( y-j, x-i, c );
-                    overlayMat.put( y+j, x-i, c );
+                    System.out.println( "Array" + srcCopy.get( x, y ).length );
+
+                    srcCopy.put( y-j, x-i, srcCopy.get( y-j, x-half ));
+                    srcCopy.put( y-j, x+i, srcCopy.get( y-j, x+half ));
                 }
             }
         }
@@ -162,6 +169,11 @@ public class Ident implements Serializable {
 
     public Mat getOverlayMat() {
         return overlayMat;
+    }
+
+    public Mat getCombiMat() {
+        bitwise_or(srcCopy, overlayMat, combiMat);
+        return combiMat;
     }
 
     public Mat getTextMat() {
